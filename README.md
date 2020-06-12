@@ -5,4 +5,4 @@ This is a solution to the mobile code challenge by 'Moallem' which is an Egyptio
 
 ## About this project
 This task is about creating a new one activity application similar to this desired layout with its all functions properly working.
-![](https://imgur.com/a/Z64TE1C)
+![](Images/screenshot.png)
