@@ -1,0 +1,2 @@
+rootProject.name='Moallem-Challenge'
+include ':app'
