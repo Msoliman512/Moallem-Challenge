@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window.decorView.setBackgroundColor(Color.WHITE);
-        val root = LayoutInflater.from(applicationContext).inflate(R.layout.activity_main, null)
+      //  val root = LayoutInflater.from(applicationContext).inflate(R.layout.activity_main, null)
         supportActionBar?.elevation = 0F
 
     }
