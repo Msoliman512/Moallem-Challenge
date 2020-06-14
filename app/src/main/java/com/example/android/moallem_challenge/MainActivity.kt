@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         subjects.add(Subject("History", R.drawable.history))
         subjects.add(Subject("Algebra", R.drawable.algebra))
         subjects.add(Subject("Literature", R.drawable.literature))
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
          recyclerView.adapter = SubjectsAdapter(subjects)
 
     }
