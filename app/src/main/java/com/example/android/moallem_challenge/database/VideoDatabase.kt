@@ -5,30 +5,25 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+/**
+ * class documentation
+ */
 @Database(entities = [Video::class], version = 1, exportSchema = false)
 abstract class VideoDatabase : RoomDatabase() {
 
     /**
-     * Connects the database to the DAO.
+     * Connects the VideoDatabase to the DAO.
      */
     abstract val videoDatabaseDao: VideoDao
 
     /**
-     * Define a companion object, this allows us to add functions on the SleepDatabase class.
+     * Define a companion object, this allows us to add functions on the VideoDatabase class.
      *
-     * For example, clients can call `SleepDatabase.getInstance(context)` to instantiate
-     * a new SleepDatabase.
+     * For example, users can call `VideoDatabase.getInstance(context)` to instantiate
+     * a new VideoDatabase.
      */
     companion object {
-        /**
-         * INSTANCE will keep a reference to any database returned via getInstance.
-         *
-         * This will help us avoid repeatedly initializing the database, which is expensive.
-         *
-         *  The value of a volatile variable will never be cached, and all writes and
-         *  reads will be done to and from the main memory. It means that changes made by one
-         *  thread to shared data are visible to other threads.
-         */
+
         @Volatile
         private var INSTANCE: VideoDatabase? = null
 
@@ -44,8 +39,6 @@ abstract class VideoDatabase : RoomDatabase() {
          * This is an example of a simple Singleton pattern that takes another Singleton as an
          * argument in Kotlin.
          *
-         * To learn more about Singleton read the wikipedia article:
-         * https://en.wikipedia.org/wiki/Singleton_pattern
          *
          * @param context The application context Singleton, used to get access to the filesystem.
          */
@@ -66,9 +59,6 @@ abstract class VideoDatabase : RoomDatabase() {
                         "subjects_videos_database"
                     )
                         // Wipes and rebuilds instead of migrating if no Migration object.
-                        // Migration is not part of this lesson. You can learn more about
-                        // migration with Room in this blog post:
-                        // https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
                         .fallbackToDestructiveMigration()
                         .build()
                     // Assign INSTANCE to the newly created database.

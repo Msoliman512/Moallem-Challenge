@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
     private suspend fun insert(videos: List<Video>) {
         withContext(Dispatchers.IO) {
-            VideoDatabase.getInstance(this@MainActivity).videoDatabaseDao.insertMultiplevideos(videos)
+            VideoDatabase.getInstance(this@MainActivity).videoDatabaseDao.insertMultipleVideos(videos)
         }
     }
 
