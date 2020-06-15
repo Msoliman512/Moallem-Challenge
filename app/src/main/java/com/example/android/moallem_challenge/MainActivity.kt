@@ -72,8 +72,10 @@ class MainActivity : AppCompatActivity() {
         subjects.add(Subject("History", R.drawable.history))
         subjects.add(Subject("Algebra", R.drawable.algebra))
         subjects.add(Subject("Literature", R.drawable.literature))
-        recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
-         recyclerView.adapter = SubjectsAdapter(subjects)
+        subjects_recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
+        subjects_recyclerView.adapter = SubjectsAdapter(subjects)
+        videos_recyclerView.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
+        // videos_recyclerView.adapter = SubjectsAdapter(retrievedVideos)
 
     }
 
