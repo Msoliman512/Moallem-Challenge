@@ -7,7 +7,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class SubjectsAdapter(val subjects: ArrayList<Subject>) : RecyclerView.Adapter<SubjectsAdapter.ViewHolder>() {
+class SubjectsAdapter(private val subjects: ArrayList<Subject>) : RecyclerView.Adapter<SubjectsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubjectsAdapter.ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.subject, parent, false)
