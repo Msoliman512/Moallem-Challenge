@@ -10,7 +10,7 @@ interface VideoDao {
     fun insert(video: Video)
 
     @Insert
-    fun insertMultiplevideos(videos: ArrayList<Video>)
+    fun insertMultiplevideos(videos: List<Video>)
 
     @Query("SELECT * FROM video")
     fun getAll(): List<Video>

@@ -20,7 +20,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     var subjects: ArrayList<Subject> = ArrayList()
-    var videos: ArrayList<Video> = ArrayList()
+   // private var videos: ArrayList<Video> = ArrayList<Video>()
+    private var retrievedVideos = emptyList<Video>()
     private var job = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + job)
 
@@ -28,8 +29,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-     //   VideoDatabase.getInstance(this).videoDatabaseDao.insertMultiplevideos()
-        videos.add(Video(1,"https://imgur.com/eegUQYj", "physics"))
+
+    /*    videos.add(Video(1,"https://imgur.com/eegUQYj", "physics"))
         videos.add(Video(2,"https://imgur.com/JxIxOQo", "physics"))
         videos.add(Video(3,"https://imgur.com/8KpS1Pu", "physics"))
         videos.add(Video(4,"https://imgur.com/Lt2hJB3", "physics"))
@@ -53,14 +54,16 @@ class MainActivity : AppCompatActivity() {
         videos.add(Video(22,"https://imgur.com/453JnCl", "literature"))
         videos.add(Video(23,"https://imgur.com/hJl9Zpg", "literature"))
         videos.add(Video(24,"https://imgur.com/SihTCFT", "literature"))
-        videos.add(Video(25,"https://imgur.com/iorHMFg", "literature"))
-
+        videos.add(Video(25,"https://imgur.com/iorHMFg", "literature")) */
 
         uiScope.launch {
-            insert(videos)
-            Toast.makeText(this@MainActivity, "Data Saved!", Toast.LENGTH_LONG).show()
+         //   insert(videos.toList())
+           // Toast.makeText(this@MainActivity, "Done Adding Data!", Toast.LENGTH_LONG).show()
+            withContext(Dispatchers.IO) {
+                retrievedVideos = VideoDatabase.getInstance(this@MainActivity).videoDatabaseDao.getAll()
+            }
+            Toast.makeText(this@MainActivity, "records =  ${retrievedVideos.count()}", Toast.LENGTH_LONG).show()
         }
-
 
         window.decorView.setBackgroundColor(Color.WHITE)
         supportActionBar?.elevation = 0F
@@ -85,9 +88,12 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
-    private suspend fun insert(videos: ArrayList<Video>) {
+    private suspend fun insert(videos: List<Video>) {
         withContext(Dispatchers.IO) {
             VideoDatabase.getInstance(this@MainActivity).videoDatabaseDao.insertMultiplevideos(videos)
         }
     }
+
+
+
 }
