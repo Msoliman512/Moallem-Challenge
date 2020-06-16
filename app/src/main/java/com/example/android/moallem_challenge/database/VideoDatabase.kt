@@ -8,13 +8,13 @@ import androidx.room.RoomDatabase
 /**
  * class documentation
  */
-@Database(entities = [Video::class], version = 1, exportSchema = false)
+@Database(entities = arrayOf(Video::class), version = 1, exportSchema = false)
 abstract class VideoDatabase : RoomDatabase() {
 
     /**
      * Connects the VideoDatabase to the DAO.
      */
-    abstract val videoDatabaseDao: VideoDao
+    abstract fun videoDao():VideoDao
 
     /**
      * Define a companion object, this allows us to add functions on the VideoDatabase class.
@@ -43,30 +43,16 @@ abstract class VideoDatabase : RoomDatabase() {
          * @param context The application context Singleton, used to get access to the filesystem.
          */
         fun getInstance(context: Context): VideoDatabase {
-            // Multiple threads can ask for the database at the same time, ensure we only initialize
-            // it once by using synchronized. Only one thread may enter a synchronized block at a
-            // time.
-            synchronized(this) {
-                // Copy the current value of INSTANCE to a local variable so Kotlin can smart cast.
-                // Smart cast is only available to local variables.
-                var instance =
-                    INSTANCE
-                // If instance is `null` make a new database instance.
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(
+                        context,
                         VideoDatabase::class.java,
                         "subjects_videos_database"
-                    )
-                        // Wipes and rebuilds instead of migrating if no Migration object.
-                        .fallbackToDestructiveMigration()
-                        .build()
-                    // Assign INSTANCE to the newly created database.
-                    INSTANCE = instance
+                    ).build()
                 }
                 // Return instance; smart cast to be non-null.
-                return instance
-            }
+                return INSTANCE as VideoDatabase
+
         }
     }
 }

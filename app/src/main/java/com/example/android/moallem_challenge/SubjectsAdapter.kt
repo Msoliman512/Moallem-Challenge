@@ -1,5 +1,7 @@
 package com.example.android.moallem_challenge
 
+import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,5 +32,6 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
         val subject: TextView = itemView.findViewById(R.id.subject_text_view)
         val icon: ImageButton = itemView.findViewById(R.id.subject_image_button)
     }
+
 
 }

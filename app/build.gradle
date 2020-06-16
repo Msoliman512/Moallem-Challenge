@@ -60,7 +60,7 @@ dependencies {
 
     //room
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
+   // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
