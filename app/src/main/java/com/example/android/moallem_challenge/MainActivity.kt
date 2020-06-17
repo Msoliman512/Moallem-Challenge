@@ -24,6 +24,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
     private lateinit var model: VideoViewModel
 
     var subjects: ArrayList<Subject> = ArrayList()
+    lateinit var adapter: VideosAdapter
 
     private var videos: ArrayList<Video> = ArrayList<Video>()
 
@@ -41,7 +42,8 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         // Observe the model
         model.allVideos.observe(this, Observer { videos ->
             // Data bind the recycler view
-            videos_recyclerView.adapter = VideosAdapter(videos, this@MainActivity, 4444)
+            adapter = VideosAdapter(videos, this@MainActivity, 4444)
+            videos_recyclerView.adapter = adapter
             Toast.makeText(
                 this@MainActivity,
                 "Records = " + videos.size,
@@ -116,13 +118,24 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
 //        retrievedVideos.get(position)
 //        intent =Intent(this, VideoActivity::class.java)
 //        startActivity(intent)
-        Toast.makeText(this, video.subject +" thumbnail Clicked | url = "+ video.url, Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            video.subject + " thumbnail Clicked | url = " + video.url,
+            Toast.LENGTH_SHORT
+        ).show()
         //  println("Hello + $position")
     }
 
     override fun onSubjecticonClick(subject: Subject) {
-        Toast.makeText(this, subject.name + " Icon Clicked", Toast.LENGTH_SHORT).show()
+        model.allVideos.observe(this, Observer { videos ->
+            val filteredList = videos.filter { it.subject!!.toLowerCase() == subject.name.toLowerCase() }
+            adapter.update(filteredList)
+            println("filtered Videos for ${subject.name} : $filteredList")
+        })
+        Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()
+
     }
-
-
 }
+
+
+

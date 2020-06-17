@@ -17,38 +17,38 @@ import kotlinx.coroutines.*
  * class documentation
  */
 class VideosAdapter(
-    private val videos: List<Video>,
+    private var videos: List<Video>,
     var videoClickListener: VideosAdapter.OnVideoClickListener,
     val test: Int
 ) :
     RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
-     var bitmaps = mutableListOf<Bitmap?>()
+    var bitmapsMap: MutableMap<String?, Bitmap?> = mutableMapOf()
 
     init {
         println("Records: " + videos.count() + " " + test)
-       // runBlocking {
+        // runBlocking {
 
-        GlobalScope.launch(Dispatchers.IO)  {            //launch
-                try {
-                    println("forLoop starts Here: ")
-                    for ((index, value) in videos.withIndex()) {
-                        println("forLoop Bitmaps: " + bitmaps.count() + " " + test)
-                        bitmaps.add(
-                            index,
-                            retrieveVideoFrameFromVideo(value.url + ".mp4")
-                        )//videos[position].url
-                        println("forLoop video: " + index + " | " + value.subject + " | " + value.url)
-                    }
-                } catch (throwable: Throwable) {
-                    throwable.printStackTrace()
+        GlobalScope.launch(Dispatchers.IO) {            //launch
+            try {
+                println("forLoop starts Here: ")
+                for ((index, value) in videos.withIndex()) {
+                    println("forLoop Bitmaps: " + bitmapsMap.count() + " " + test)
+                    bitmapsMap.put(
+                        value.url,
+                        retrieveVideoFrameFromVideo(value.url + ".mp4")
+                    )//videos[position].url
+                    println("forLoop video: " + index + " | " + value.subject + " | " + value.url)
                 }
+            } catch (throwable: Throwable) {
+                throwable.printStackTrace()
             }
-
-      //  }
-        println("Bitmaps: " + bitmaps.count() + " " + test)
-        for ((index, value) in bitmaps.withIndex()) {
-            println("bitmap ${index} : " + value)
         }
+
+        //  }
+//        println("Bitmaps: " + bitmapsMap.count() + " " + test)
+//        for ((index, value) in bitmapsMap.withIndex()) {
+//            println("bitmap ${index} : " + value)
+//        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -58,10 +58,10 @@ class VideosAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var selectedBITMAP = createBitmap(100,100, Bitmap.Config.ARGB_8888)
-        if(position < bitmaps.count())
-         selectedBITMAP = bitmaps[position]!!
-        val selectedVideo = videos[position]
+        var selectedBITMAP = createBitmap(100, 100, Bitmap.Config.ARGB_8888)
+        if (position < bitmapsMap.count())
+            selectedBITMAP = bitmapsMap.get(videos[position].url)!!
+        val selectedVideo = videos[position]!!
         holder.thumbnail.setImageBitmap(selectedBITMAP)  //bitmaps[position]
         holder.bind(selectedVideo, videoClickListener)
     }
@@ -105,4 +105,8 @@ class VideosAdapter(
         fun onVideoClick(video: Video)
     }
 
+    fun update(filteredVideos: List<Video>) {
+        videos = filteredVideos
+        notifyDataSetChanged()
+    }
 }
