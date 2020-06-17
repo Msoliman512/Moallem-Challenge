@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 
-class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener,
+class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
     SubjectsAdapter.OnSubjectIconClickListener {
 
     private lateinit var model: VideoViewModel
@@ -45,7 +45,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener,
             Toast.makeText(
                 this@MainActivity,
                 "Records = " + videos.size,
-                Toast.LENGTH_LONG
+                Toast.LENGTH_SHORT
             ).show()
         })
 
@@ -71,17 +71,17 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener,
            videos.add(Video(18,"https://imgur.com/qvsnkTk", "history"))
            videos.add(Video(19,"https://imgur.com/eB4EyEJ", "algebra"))
            videos.add(Video(20,"https://imgur.com/pnP5Y4h", "algebra"))
-           videos.add(Video(21,"https://imgur.com/Jh1dCjsh", "algebra"))
+           videos.add(Video(21,"https://imgur.com/Jh1dCjs", "algebra"))      // old bug: https://imgur.com/Jh1dCjsh
            videos.add(Video(22,"https://imgur.com/453JnCl", "literature"))
            videos.add(Video(23,"https://imgur.com/hJl9Zpg", "literature"))
            videos.add(Video(24,"https://imgur.com/SihTCFT", "literature"))
            videos.add(Video(25,"https://imgur.com/iorHMFg", "literature"))  */
 
 
-//        // populate the database for the first time using coroutines
+        // populate the database for the first time using coroutines or Update
 //        launch {
 //            baseContext?.let {
-//                model.insertMultiple(videos)
+//                model.updateRecord(Video(21,"https://imgur.com/Jh1dCjs","algebra"))
 //            }
 //        }
 
@@ -116,7 +116,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener,
 //        retrievedVideos.get(position)
 //        intent =Intent(this, VideoActivity::class.java)
 //        startActivity(intent)
-        Toast.makeText(this, "Item Clicked", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, video.subject +" thumbnail Clicked | url = "+ video.url, Toast.LENGTH_SHORT).show()
         //  println("Hello + $position")
     }
 

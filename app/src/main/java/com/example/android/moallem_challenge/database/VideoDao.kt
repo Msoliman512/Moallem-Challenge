@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface VideoDao {
@@ -24,4 +25,12 @@ interface VideoDao {
      */
     @Query("SELECT * FROM videosTbl WHERE subject LIKE :subjectName")
     suspend fun findBySubject(subjectName: String): List<Video>
+    /**
+     * When updating a row with a value already set in a column,
+     * replaces the old value with the new one.
+     *
+     * @param video new value to write
+     */
+    @Update
+    suspend fun update(video: Video)
 }

@@ -15,5 +15,10 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
         db.videoDao().insertMultipleVideos(videos)
     }
 
+    suspend fun updateRecord(video: Video)
+    {
+        db.videoDao().update(video)
+    }
+
 
 }
