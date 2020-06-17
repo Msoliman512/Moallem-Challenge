@@ -1,8 +1,9 @@
 package com.example.android.moallem_challenge
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
+import android.graphics.*
+import android.media.MediaMetadataRetriever
 import android.view.Menu
 import android.view.MenuInflater
 import android.widget.Toast
@@ -15,6 +16,7 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.internal.ViewUtils
 import java.util.*
 
 
@@ -32,6 +34,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
     private var bitmaps = mutableListOf<Bitmap?>()
 
 
+    @SuppressLint("RestrictedApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -97,8 +100,12 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         subjects_recyclerView.layoutManager =
             LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         subjects_recyclerView.adapter = SubjectsAdapter(subjects, this)
+       val bitmap = retrieveVideoFrameFromVideo("https://imgur.com/iorHMFg.mp4")?.let {
+           Bitmap.createScaledBitmap(
+               it, ViewUtils.dpToPx(this,200).toInt(), ViewUtils.dpToPx(this, 150).toInt(), false)
+       };
 
-        // test_image_button.setImageBitmap( retrieveVideoFrameFromVideo("https://imgur.com/iorHMFg.mp4"))
+       //  test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) })
 //        Toast.makeText(
 //            this@MainActivity,
 //            "records 2 =  ${retrievedVideos.count()}",
@@ -134,6 +141,47 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         })
         Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()
 
+    }
+
+    @Throws(Throwable::class)
+    fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
+        var bitmap: Bitmap? = null
+        var mediaMetadataRetriever: MediaMetadataRetriever? = null
+        try {
+            mediaMetadataRetriever = MediaMetadataRetriever()
+            mediaMetadataRetriever.setDataSource(
+                videoPath,
+                HashMap()
+            )
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+        } finally {
+            mediaMetadataRetriever?.release()
+        }
+        return bitmap
+    }
+
+    private fun getRoundedCornerBitmap(bitmap: Bitmap, pixels: Int): Bitmap? {
+        val output = Bitmap.createBitmap(
+            bitmap.width, bitmap
+                .height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(output)
+        val color = Color.RED
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(rect)
+        val roundPx = pixels.toFloat()
+        paint.isAntiAlias = true
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.color = color
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+        return output
     }
 }
 
