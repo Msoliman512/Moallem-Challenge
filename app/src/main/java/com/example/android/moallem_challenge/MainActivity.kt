@@ -1,22 +1,19 @@
 package com.example.android.moallem_challenge
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.*
 import android.media.MediaMetadataRetriever
+import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import com.example.android.moallem_challenge.database.Video
-import com.example.android.moallem_challenge.database.VideoDatabase
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.*
-import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.android.moallem_challenge.database.Video
 import com.google.android.material.internal.ViewUtils
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 
@@ -105,7 +102,11 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
                it, ViewUtils.dpToPx(this,200).toInt(), ViewUtils.dpToPx(this, 150).toInt(), false)
        };
 
-       //  test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) })
+         test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) }?.let {
+             overlay(
+                 it,BitmapFactory.decodeResource(this@MainActivity.resources,
+                     R.drawable.play))
+         })
 //        Toast.makeText(
 //            this@MainActivity,
 //            "records 2 =  ${retrievedVideos.count()}",
@@ -182,6 +183,15 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
         canvas.drawBitmap(bitmap, rect, rect, paint)
         return output
+    }
+
+    private fun overlay(bmp1: Bitmap, bmp2: Bitmap): Bitmap? {
+        val bmOverlay =
+            Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
+        val canvas = Canvas(bmOverlay)
+        canvas.drawBitmap(bmp1, Matrix(), null)
+        canvas.drawBitmap(bmp2,((bmp1.width/2) - bmp2.width/2).toFloat() , ((bmp1.height/2) - bmp2.height/2).toFloat(), null)
+        return bmOverlay
     }
 }
 

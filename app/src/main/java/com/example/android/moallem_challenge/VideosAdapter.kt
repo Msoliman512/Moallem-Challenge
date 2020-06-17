@@ -75,7 +75,10 @@ class VideosAdapter(
         if (position < bitmapsMap.count())
             selectedBITMAP = bitmapsMap.get(videos[position].url)!!
         val selectedVideo = videos[position]!!
-        holder.thumbnail.setImageBitmap(getRoundedCornerBitmap(selectedBITMAP, dpToPx(context,15).toInt()))  //bitmaps[position]
+        holder.thumbnail.setImageBitmap(getRoundedCornerBitmap(selectedBITMAP, dpToPx(context,15).toInt())?.let {
+            overlay(
+                it,BitmapFactory.decodeResource(context.resources,R.drawable.play))
+        })  //bitmaps[position]
         holder.thumbnail.elevation = dpToPx(context,2).toFloat()
         holder.bind(selectedVideo, videoClickListener)
     }
@@ -141,5 +144,13 @@ class VideosAdapter(
         paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
         canvas.drawBitmap(bitmap, rect, rect, paint)
         return output
+    }
+    private fun overlay(bmp1: Bitmap, bmp2: Bitmap): Bitmap? {
+        val bmOverlay =
+            Bitmap.createBitmap(bmp1.width, bmp1.height, bmp1.config)
+        val canvas = Canvas(bmOverlay)
+        canvas.drawBitmap(bmp1, Matrix(), null)
+        canvas.drawBitmap(bmp2,((bmp1.width/2) - bmp2.width/2).toFloat() , ((bmp1.height/2) - bmp2.height/2).toFloat(), null)
+        return bmOverlay
     }
 }
