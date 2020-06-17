@@ -10,8 +10,10 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
     private val db:VideoDatabase = VideoDatabase.getInstance(application)
     internal val allVideos : LiveData<List<Video>> = db.videoDao().getAll()
 
+
     suspend fun insertMultiple(videos: List<Video>){
         db.videoDao().insertMultipleVideos(videos)
     }
+
 
 }

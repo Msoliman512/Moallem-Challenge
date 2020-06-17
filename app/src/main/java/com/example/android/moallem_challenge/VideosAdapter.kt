@@ -15,47 +15,53 @@ import kotlinx.coroutines.*
 /**
  * class documentation
  */
-class VideosAdapter(private val videos: List<Video>, var clickListener: OnVideoListener, val test:Int) :
+class VideosAdapter(
+    private val videos: List<Video>,
+    var clickListener: OnVideoListener,
+    val test: Int
+) :
     RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
-    private var bitmaps = mutableListOf<Bitmap?>()
+     var bitmaps = mutableListOf<Bitmap?>()
+
     init {
-//
-//        runBlocking {
-//            launch {
-//
-//                //  holder.thumbnail.setImageBitmap(Bitmap.createBi)
-//                try {
-//                    for ((index, value) in videos.withIndex()) {
-//                        bitmaps.add(
-//                            index,
-//                            retrieveVideoFrameFromVideo(value.url + ".mp4")
-//                        )//videos[position].url
-//                    }
-//                } catch (throwable: Throwable) {
-//                    throwable.printStackTrace()
-//                }
-//            }
-//        }
-println("Records: " + videos.count()+" " + test)
+
+        runBlocking {
+            launch {
+                try {
+                    for ((index, value) in videos.withIndex()) {
+                        bitmaps.add(
+                            index,
+                            retrieveVideoFrameFromVideo(value.url + ".mp4")
+                        )//videos[position].url
+                    }
+                } catch (throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+            }
+        }
+        println("Records: " + videos.count() + " " + test)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
             LayoutInflater.from(parent.context).inflate(R.layout.video, parent, false)
         return ViewHolder(view)
     }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-         holder.thumbnail.setImageBitmap(retrieveVideoFrameFromVideo(videos[position].url + ".mp4"))  //bitmaps[position]
-        holder.initialize(videos[position], clickListener)
+        holder.thumbnail.setImageBitmap(bitmaps[position])  //bitmaps[position]
+        holder.initialize(videos.get(position), clickListener)
     }
+
     override fun getItemCount() = videos.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val thumbnail: ImageButton = itemView.findViewById(R.id.video_image_button)
-        fun initialize (video: Video, action:OnVideoListener){
-
-            itemView.setOnClickListener{
-                action.onVideoClick(video, adapterPosition)
+        fun initialize(video: Video, action: OnVideoListener) {
+            //thumbnail.setImageBitmap(vid)  //bitmaps[position]
+            itemView.setOnClickListener {
+                action.onVideoClick(video)
             }
         }
     }
@@ -80,8 +86,9 @@ println("Records: " + videos.count()+" " + test)
         }
         return bitmap
     }
-     interface OnVideoListener {
-        fun onVideoClick(video: Video, position: Int)
+
+    interface OnVideoListener {
+        fun onVideoClick(video: Video)
     }
 
 }

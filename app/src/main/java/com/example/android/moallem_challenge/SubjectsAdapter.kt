@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * class documentation
  */
-class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
+class SubjectsAdapter(private val subjects: ArrayList<Subject>, var subjectClickListener: OnSubjectIconClickListener) :
     RecyclerView.Adapter<SubjectsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,14 +24,30 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>) :
     override fun getItemCount() = subjects.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.subject.text = subjects[position].name
-        holder.icon.setImageResource(subjects[position].iconRes)
+        val selectedSubject = subjects[position]
+        holder.subject.text = selectedSubject.name
+        holder.icon.setImageResource(selectedSubject.iconRes)
+
+        holder.bind(selectedSubject,subjectClickListener)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val subject: TextView = itemView.findViewById(R.id.subject_text_view)
         val icon: ImageButton = itemView.findViewById(R.id.subject_image_button)
+
+        fun bind(subject1: Subject, clickListener: OnSubjectIconClickListener)
+        {
+            subject.text = subject1.name
+            icon.setImageResource(subject1.iconRes)
+
+            icon.setOnClickListener{
+                clickListener.onSubjecticonClick(subject1)
+            }
+        }
     }
 
+    interface OnSubjectIconClickListener{
+        fun onSubjecticonClick(subject: Subject)
+    }
 
 }

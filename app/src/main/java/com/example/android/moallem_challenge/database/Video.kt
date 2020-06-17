@@ -1,5 +1,6 @@
 package com.example.android.moallem_challenge.database
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

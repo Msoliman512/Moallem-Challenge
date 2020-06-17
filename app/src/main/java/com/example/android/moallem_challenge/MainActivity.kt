@@ -18,7 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 
-class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener {
+class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener,
+    SubjectsAdapter.OnSubjectIconClickListener {
 
     private lateinit var model: VideoViewModel
 
@@ -43,7 +44,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener {
             videos_recyclerView.adapter = VideosAdapter(videos, this@MainActivity, 4444)
             Toast.makeText(
                 this@MainActivity,
-                "Data Saved! records = " + videos.size,
+                "Records = " + videos.size,
                 Toast.LENGTH_LONG
             ).show()
         })
@@ -84,7 +85,6 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener {
 //            }
 //        }
 
-        //Toast.makeText(this@MainActivity, "records + ${retrievedVideos.count().toString() + " " + retrievedVideos[0].subject + " "+ retrievedVideos[0].url}", Toast.LENGTH_LONG).show()
         window.decorView.setBackgroundColor(Color.WHITE)
         supportActionBar?.elevation = 0F
         subjects.add(Subject("Physics", R.drawable.physics))
@@ -94,7 +94,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener {
         subjects.add(Subject("Literature", R.drawable.literature))
         subjects_recyclerView.layoutManager =
             LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
-        subjects_recyclerView.adapter = SubjectsAdapter(subjects)
+        subjects_recyclerView.adapter = SubjectsAdapter(subjects, this)
 
         // test_image_button.setImageBitmap( retrieveVideoFrameFromVideo("https://imgur.com/iorHMFg.mp4"))
 //        Toast.makeText(
@@ -111,33 +111,18 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoListener {
         return true
     }
 
-    private suspend fun insert(videos: List<Video>) {
-        withContext(Dispatchers.IO) {
-            VideoDatabase.getInstance(this@MainActivity).videoDao().insertMultipleVideos(
-                videos
-            )
-        }
-    }
 
-    override fun onVideoClick(video: Video, position: Int) {
+    override fun onVideoClick(video: Video) {
 //        retrievedVideos.get(position)
 //        intent =Intent(this, VideoActivity::class.java)
 //        startActivity(intent)
-        Toast.makeText(this@MainActivity, "Hello + $position", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Item Clicked", Toast.LENGTH_LONG).show()
         //  println("Hello + $position")
     }
 
-
-//    private fun initializeVideos() {
-//        uiScope.launch {
-//        }
-//    }
-//    private suspend fun getAllFromDatabase(): MutableList<Video> {
-//        return withContext(Dispatchers.IO) {
-//            var vids =
-//            night
-//        }
-//    }
+    override fun onSubjecticonClick(subject: Subject) {
+        Toast.makeText(this, subject.name + " Icon Clicked", Toast.LENGTH_SHORT).show()
+    }
 
 
 }
