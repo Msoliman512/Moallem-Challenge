@@ -18,7 +18,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 const val VIDEO_URI_KEY = "VIDEO_URI"
-
+/**
+ * MainActivity
+ *
+ */
 class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
     SubjectsAdapter.OnSubjectIconClickListener {
 
@@ -140,7 +143,9 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
 
     override fun onSubjectIconClick(subject: Subject) {
         model.allVideos.observe(this, Observer { videos ->
-            val filteredList = videos.filter { it.subject!!.toLowerCase() == subject.name.toLowerCase() }
+            val filteredList = videos.filter { it.subject!!.toLowerCase(Locale.ROOT) == subject.name.toLowerCase(
+                Locale.ROOT)
+            }
             adapter.update(filteredList)
             videos_recyclerView.adapter = adapter
             println("filtered Videos for ${subject.name} : $filteredList")
@@ -151,7 +156,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
 
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap?
+        val bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()

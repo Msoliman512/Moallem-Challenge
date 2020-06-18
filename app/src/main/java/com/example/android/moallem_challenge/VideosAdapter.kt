@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
  */
 class VideosAdapter(
     private var videos: List<Video>,
-    var videoClickListener: VideosAdapter.OnVideoClickListener,
+    var videoClickListener: OnVideoClickListener,
     val context: Context,
     val test: Int
 ) :
@@ -73,7 +73,7 @@ class VideosAdapter(
             overlay(
                 it,BitmapFactory.decodeResource(context.resources,R.drawable.play))
         })  //bitmaps[position]
-        holder.thumbnail.elevation = dpToPx(context,2).toFloat()
+        holder.thumbnail.elevation = dpToPx(context,2)
         holder.bind(selectedVideo, videoClickListener)
     }
 
@@ -100,10 +100,13 @@ class VideosAdapter(
             }
         }
     }
-
+    /**
+     * function that download a video thumbnail using a url
+     * @param videoPath  url to be passed
+     */
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap?
+        val bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()
@@ -125,6 +128,10 @@ class VideosAdapter(
      * interface documentation
      */
     interface OnVideoClickListener {
+        /**
+         * a callback method to override in the main activity to access videos
+         * @param video
+         */
         fun onVideoClick(video: Video)
     }
 

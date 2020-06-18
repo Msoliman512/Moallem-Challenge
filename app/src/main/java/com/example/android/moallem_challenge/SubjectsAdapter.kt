@@ -58,7 +58,7 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>, var subjectClick
      */
     interface OnSubjectIconClickListener{
         /**
-         * a callback method to override in the main activity to use subjects
+         * a callback method to override in the main activity to access subjects
          * @param subject
          */
         fun onSubjectIconClick(subject: Subject)

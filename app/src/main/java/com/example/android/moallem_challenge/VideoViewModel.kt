@@ -13,17 +13,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+/**
+ * VideoViewModel
+ */
 class VideoViewModel(application: Application): AndroidViewModel(application){
     private val db:VideoDatabase = VideoDatabase.getInstance(application)
     internal val allVideos : LiveData<List<Video>> = db.videoDao().getAll()
     //internal val bitmapsMap: MutableLiveData<MutableMap<String?, Bitmap?>> = getBitmaps(allVideos)
 
 
-
+    /**
+     * function that updates multiple records
+     * @param videos List of videos to be inserted
+     */
     suspend fun insertMultiple(videos: List<Video>){
         db.videoDao().insertMultipleVideos(videos)
     }
-
+    /**
+     * function that updates an existing record
+     * @param video existing record to be updated
+     */
     suspend fun updateRecord(video: Video)
     {
         db.videoDao().update(video)
@@ -31,7 +40,7 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
 
     @Suppress("UNCHECKED_CAST")
     private fun getBitmaps(videos: LiveData<List<Video>>) :MutableLiveData<MutableMap<String?, Bitmap?>> {
-        var bitmapsMap: MutableMap<String?, Bitmap?> = mutableMapOf()
+        val bitmapsMap: MutableMap<String?, Bitmap?> = mutableMapOf()
         GlobalScope.launch(Dispatchers.IO) {            //launch
             try {
                 println("forLoop starts Here: ")
@@ -58,7 +67,7 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
      */
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap?
+        val bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()
