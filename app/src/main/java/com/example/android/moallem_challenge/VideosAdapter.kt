@@ -46,7 +46,7 @@ class VideosAdapter(
                     }//videos[position].url
                     println("forLoop video: " + index + " | " + value.subject + " | " + value.url)
                 }
-            } catch (throwable: Throwable) {
+            } catch (throwable: RuntimeException) {
                 throwable.printStackTrace()
             }
         }
@@ -68,7 +68,7 @@ class VideosAdapter(
         var selectedBITMAP = createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         if (position < bitmapsMap.count())
             selectedBITMAP = bitmapsMap[videos[position].url] ?: selectedBITMAP
-        val selectedVideo = videos[position]!!
+        val selectedVideo = videos[position]
         holder.thumbnail.setImageBitmap(getRoundedCornerBitmap(selectedBITMAP, dpToPx(context,15).toInt())?.let {
             overlay(
                 it,BitmapFactory.decodeResource(context.resources,R.drawable.play))
@@ -79,8 +79,18 @@ class VideosAdapter(
 
     override fun getItemCount() = videos.count()
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    /**
+     * class documentation
+     */
+      class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val thumbnail: ImageButton = itemView.findViewById(R.id.video_image_button)
+
+
+        /**
+         * function to attach a listener of type OnVideoClickListener to the Videos recyclerview items
+         * @param video
+         * @param action
+         */
         fun bind(video: Video, action: OnVideoClickListener) {
 
             //val emptyBITMAP = createBitmap(100,100, Bitmap.Config.ARGB_8888)
@@ -93,7 +103,7 @@ class VideosAdapter(
 
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap? = null
+        var bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()
@@ -103,15 +113,17 @@ class VideosAdapter(
             )
             //   mediaMetadataRetriever.setDataSource(videoPath);
             bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
-        } catch (e: Exception) {
+        } catch (e: RuntimeException) { //Exception
             e.printStackTrace()
-            throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+            throw Throwable("Exception in retrieve VideoFrameFromVideo(String videoPath)" + e.message)
         } finally {
             mediaMetadataRetriever?.release()
         }
         return bitmap
     }
-
+    /**
+     * interface documentation
+     */
     interface OnVideoClickListener {
         fun onVideoClick(video: Video)
     }

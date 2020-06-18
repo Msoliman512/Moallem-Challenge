@@ -6,7 +6,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlin.coroutines.CoroutineContext
-
+/**
+ * class that defines Coroutines Scope and handle jobs lifecycle
+ */
 abstract class BaseActivity : AppCompatActivity(), CoroutineScope{
 
     private lateinit var job: Job

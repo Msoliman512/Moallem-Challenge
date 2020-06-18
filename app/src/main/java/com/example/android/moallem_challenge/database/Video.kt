@@ -4,7 +4,9 @@ import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+/**
+ * data class that holds videos categories and urls
+ */
 @Entity(tableName = "videosTbl")
 data class Video(
     @PrimaryKey val uid: Int,

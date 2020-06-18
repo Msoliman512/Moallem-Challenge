@@ -100,10 +100,10 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         subjects_recyclerView.layoutManager =
             LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
         subjects_recyclerView.adapter = SubjectsAdapter(subjects, this)
-       val bitmap = retrieveVideoFrameFromVideo("https://imgur.com/iorHMFg.mp4")?.let {
-           Bitmap.createScaledBitmap(
-               it, ViewUtils.dpToPx(this,200).toInt(), ViewUtils.dpToPx(this, 150).toInt(), false)
-       };
+//       val bitmap = retrieveVideoFrameFromVideo("https://imgur.com/iorHMFg.mp4")?.let {
+//           Bitmap.createScaledBitmap(
+//               it, ViewUtils.dpToPx(this,200).toInt(), ViewUtils.dpToPx(this, 150).toInt(), false)
+//       };
 
 //         test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) }?.let {
 //             overlay(
@@ -138,20 +138,20 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         //  println("Hello + $position")
     }
 
-    override fun onSubjecticonClick(subject: Subject) {
+    override fun onSubjectIconClick(subject: Subject) {
         model.allVideos.observe(this, Observer { videos ->
             val filteredList = videos.filter { it.subject!!.toLowerCase() == subject.name.toLowerCase() }
             adapter.update(filteredList)
             videos_recyclerView.adapter = adapter
             println("filtered Videos for ${subject.name} : $filteredList")
         })
-        Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()
+        //Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()
 
     }
 
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap? = null
+        var bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()
@@ -161,9 +161,9 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
             )
             //   mediaMetadataRetriever.setDataSource(videoPath);
             bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
-        } catch (e: Exception) {
+        } catch (e: RuntimeException) { //Exception
             e.printStackTrace()
-            throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+            throw Throwable("Exception in retrieve VideoFrameFromVideo(String videoPath)" + e.message)
         } finally {
             mediaMetadataRetriever?.release()
         }

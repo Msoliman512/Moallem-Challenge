@@ -6,6 +6,9 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 
+/**
+ * interface that works as a medium between ModelView class and the database
+ */
 @Dao
 interface VideoDao {
     /**

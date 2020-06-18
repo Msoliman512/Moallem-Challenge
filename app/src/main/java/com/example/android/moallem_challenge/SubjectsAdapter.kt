@@ -31,23 +31,37 @@ class SubjectsAdapter(private val subjects: ArrayList<Subject>, var subjectClick
         holder.bind(selectedSubject,subjectClickListener)
     }
 
+    /**
+     *  some documentation xD
+     */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val subject: TextView = itemView.findViewById(R.id.subject_text_view)
         val icon: ImageButton = itemView.findViewById(R.id.subject_image_button)
 
+        /**
+         * function to attach a listener of type OnSubjectClickListener to the Subjects recyclerview items
+         * @param subject1
+         * @param clickListener
+         */
         fun bind(subject1: Subject, clickListener: OnSubjectIconClickListener)
         {
             subject.text = subject1.name
             icon.setImageResource(subject1.iconRes)
 
             icon.setOnClickListener{
-                clickListener.onSubjecticonClick(subject1)
+                clickListener.onSubjectIconClick(subject1)
             }
         }
     }
-
+    /**
+     * interface documentation
+     */
     interface OnSubjectIconClickListener{
-        fun onSubjecticonClick(subject: Subject)
+        /**
+         * a callback method to override in the main activity to use subjects
+         * @param subject
+         */
+        fun onSubjectIconClick(subject: Subject)
     }
 
 }

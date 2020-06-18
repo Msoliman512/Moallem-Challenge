@@ -53,9 +53,12 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
         return bitmapsMap as MutableLiveData<MutableMap<String?, Bitmap?>>
     }
 
+    /**
+     *  documentation
+     */
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
-        var bitmap: Bitmap? = null
+        var bitmap: Bitmap?
         var mediaMetadataRetriever: MediaMetadataRetriever? = null
         try {
             mediaMetadataRetriever = MediaMetadataRetriever()
@@ -65,9 +68,9 @@ class VideoViewModel(application: Application): AndroidViewModel(application){
             )
             //   mediaMetadataRetriever.setDataSource(videoPath);
             bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
-        } catch (e: Exception) {
+        } catch (e: RuntimeException) { //Exception
             e.printStackTrace()
-            throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+            throw Throwable("Exception in retrieve VideoFrameFromVideo(String videoPath)" + e.message)
         } finally {
             mediaMetadataRetriever?.release()
         }

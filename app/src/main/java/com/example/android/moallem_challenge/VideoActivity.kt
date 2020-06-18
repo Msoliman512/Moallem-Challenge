@@ -55,10 +55,10 @@ class VideoActivity : AppCompatActivity() {
 
         playerView.player = simpleExoPlayer
         playerView.keepScreenOn = true
-        simpleExoPlayer?.prepare(mediaSource)
-        simpleExoPlayer?.playWhenReady = true
+        simpleExoPlayer.prepare(mediaSource)
+        simpleExoPlayer.playWhenReady = true
 
-        simpleExoPlayer?.addListener(object : Player.EventListener {
+        simpleExoPlayer.addListener(object : Player.EventListener {
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 if (playbackState == Player.STATE_BUFFERING) {
                     progress_bar.visibility = View.VISIBLE
@@ -93,12 +93,12 @@ class VideoActivity : AppCompatActivity() {
     }
     override fun onPause() {
         super.onPause()
-        simpleExoPlayer?.playWhenReady = false
-        simpleExoPlayer?.playbackState
+        simpleExoPlayer.playWhenReady = false
+        simpleExoPlayer.playbackState
     }
     override fun onResume() {
         super.onResume()
-        simpleExoPlayer?.playWhenReady = true
-        simpleExoPlayer?.playbackState
+        simpleExoPlayer.playWhenReady = true
+        simpleExoPlayer.playbackState
     }
 }
