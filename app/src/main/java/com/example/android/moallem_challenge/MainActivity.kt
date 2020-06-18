@@ -1,6 +1,7 @@
 package com.example.android.moallem_challenge
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.*
 import android.media.MediaMetadataRetriever
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.android.material.internal.ViewUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
+const val VIDEO_URI_KEY = "VIDEO_URI"
 
 class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
     SubjectsAdapter.OnSubjectIconClickListener {
@@ -42,14 +44,15 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         // Observe the model
         model.allVideos.observe(this, Observer { videos ->
             // Data bind the recycler view
-            adapter = VideosAdapter(videos, this@MainActivity, 4444)
-            videos_recyclerView.adapter = adapter
-            Toast.makeText(
-                this@MainActivity,
-                "Records = " + videos.size,
-                Toast.LENGTH_SHORT
-            ).show()
+            adapter = VideosAdapter(videos, this@MainActivity, this,4444)
+ //           videos_recyclerView.adapter = adapter
+//            Toast.makeText(
+//                this@MainActivity,
+//                "Records = " + videos.size,
+//                Toast.LENGTH_SHORT
+//            ).show()
         })
+        //println("model.bitMaps: " + model.bitmapsMap.value)
 
 
         // populate the database for the first time
@@ -102,11 +105,11 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
                it, ViewUtils.dpToPx(this,200).toInt(), ViewUtils.dpToPx(this, 150).toInt(), false)
        };
 
-         test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) }?.let {
-             overlay(
-                 it,BitmapFactory.decodeResource(this@MainActivity.resources,
-                     R.drawable.play))
-         })
+//         test_image_button.setImageBitmap(bitmap?.let { getRoundedCornerBitmap(it,ViewUtils.dpToPx(this,15).toInt()) }?.let {
+//             overlay(
+//                 it,BitmapFactory.decodeResource(this@MainActivity.resources,
+//                     R.drawable.play))
+//         })
 //        Toast.makeText(
 //            this@MainActivity,
 //            "records 2 =  ${retrievedVideos.count()}",
@@ -123,14 +126,15 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
 
 
     override fun onVideoClick(video: Video) {
-//        retrievedVideos.get(position)
-//        intent =Intent(this, VideoActivity::class.java)
-//        startActivity(intent)
-        Toast.makeText(
-            this,
-            video.subject + " thumbnail Clicked | url = " + video.url,
-            Toast.LENGTH_SHORT
-        ).show()
+     intent = Intent(this, VideoActivity::class.java).apply {
+         putExtra(VIDEO_URI_KEY, video.url)
+     }
+     startActivity(intent)
+//        Toast.makeText(
+//            this,
+//            video.subject + " thumbnail Clicked | url = " + video.url,
+//            Toast.LENGTH_SHORT
+//        ).show()
         //  println("Hello + $position")
     }
 
@@ -138,6 +142,7 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         model.allVideos.observe(this, Observer { videos ->
             val filteredList = videos.filter { it.subject!!.toLowerCase() == subject.name.toLowerCase() }
             adapter.update(filteredList)
+            videos_recyclerView.adapter = adapter
             println("filtered Videos for ${subject.name} : $filteredList")
         })
         Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()

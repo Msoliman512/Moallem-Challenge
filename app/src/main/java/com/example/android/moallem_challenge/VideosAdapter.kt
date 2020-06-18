@@ -24,18 +24,15 @@ import kotlinx.coroutines.launch
 class VideosAdapter(
     private var videos: List<Video>,
     var videoClickListener: VideosAdapter.OnVideoClickListener,
+    val context: Context,
     val test: Int
 ) :
     RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
-    private lateinit var context: Context
     var bitmapsMap: MutableMap<String?, Bitmap?> = mutableMapOf()
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        context =   recyclerView.context
-    }
 
  init {
-        println("Records: " + videos.count() + " " + test)
+
+     println("Records: " + videos.count() + " " + test)
         // runBlocking {
 
         GlobalScope.launch(Dispatchers.IO) {            //launch
@@ -43,13 +40,10 @@ class VideosAdapter(
                 println("forLoop starts Here: ")
                 for ((index, value) in videos.withIndex()) {
                     println("forLoop Bitmaps: " + bitmapsMap.count() + " " + test)
-                    bitmapsMap.put(
-                        value.url,
-                        retrieveVideoFrameFromVideo(value.url + ".mp4")?.let {
-                            Bitmap.createScaledBitmap(
-                                it, dpToPx(context,200).toInt(), dpToPx(context,150).toInt(), false)
-                        }
-                    )//videos[position].url
+                    bitmapsMap[value.url] = retrieveVideoFrameFromVideo(value.url + ".mp4")?.let {
+                        Bitmap.createScaledBitmap(
+                            it, dpToPx(context,200).toInt(), dpToPx(context,150).toInt(), false)
+                    }//videos[position].url
                     println("forLoop video: " + index + " | " + value.subject + " | " + value.url)
                 }
             } catch (throwable: Throwable) {
@@ -73,7 +67,7 @@ class VideosAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var selectedBITMAP = createBitmap(100, 100, Bitmap.Config.ARGB_8888)
         if (position < bitmapsMap.count())
-            selectedBITMAP = bitmapsMap.get(videos[position].url)!!
+            selectedBITMAP = bitmapsMap[videos[position].url] ?: selectedBITMAP
         val selectedVideo = videos[position]!!
         holder.thumbnail.setImageBitmap(getRoundedCornerBitmap(selectedBITMAP, dpToPx(context,15).toInt())?.let {
             overlay(

@@ -4,4 +4,5 @@
     <string name="subjects">Subjects</string>
     <string name="subject">Subject</string>
     <string name="welcome_back">Welcome Back!\nContinue learning?</string>
+    <string name="btn_slash" />
 </resources>

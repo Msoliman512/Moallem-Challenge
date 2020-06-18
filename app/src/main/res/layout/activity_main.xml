@@ -75,19 +75,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <ImageButton
-        android:id="@+id/test_image_button"
-        android:layout_width="200dp"
-        android:layout_height="150dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/custom_button"
-        android:elevation="2dp"
-        android:src="@drawable/custom_overflow_menu"
-        app:layout_constraintBottom_toBottomOf="@+id/videos_recyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/videos_recyclerView"
-        tools:ignore="ContentDescription" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -71,6 +71,11 @@ dependencies {
     //room
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version_coroutine"
    // implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version_coroutine"
+        //Mutable LiveData
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01'
+
+    //exoplayer lib
+    implementation 'com.google.android.exoplayer:exoplayer:2.11.3'
 
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
