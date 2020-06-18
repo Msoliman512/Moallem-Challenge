@@ -12,7 +12,7 @@ This task is about creating a new one activity application similar to this desir
 ![](Images/screenshot.png)
 
 ## Screenshot
-![](Images/myScreenshot-1.png)
-![](Images/myScreenshot-2.png)
-![](Images/myScreenshot-3.png)
-![](Images/myScreenshot-4.png)
+![](Images/myScreenshot-1.jpg)
+![](Images/myScreenshot-2.jpg)
+![](Images/myScreenshot-3.jpg)
+![](Images/myScreenshot-4.jpg)
