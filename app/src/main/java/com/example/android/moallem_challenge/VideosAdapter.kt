@@ -134,7 +134,10 @@ class VideosAdapter(
          */
         fun onVideoClick(video: Video)
     }
-
+    /**
+     * function that updates the adapter with new data
+     * @param filteredVideos filtered videos according to the subject icon click
+     */
     fun update(filteredVideos: List<Video>) {
         videos = filteredVideos
         notifyDataSetChanged()

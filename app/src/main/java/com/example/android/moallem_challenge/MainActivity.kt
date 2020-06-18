@@ -153,7 +153,9 @@ class MainActivity : BaseActivity(), VideosAdapter.OnVideoClickListener,
         //Toast.makeText(this, subject.name + " Icon Clicked" , Toast.LENGTH_SHORT).show()
 
     }
-
+    /**
+     * documentation
+     */
     @Throws(Throwable::class)
     fun retrieveVideoFrameFromVideo(videoPath: String?): Bitmap? {
         val bitmap: Bitmap?
